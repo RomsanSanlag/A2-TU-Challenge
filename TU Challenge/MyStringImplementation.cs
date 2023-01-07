@@ -48,8 +48,8 @@ namespace TU_Challenge
 
         public static string MixString(string a, string b)
         {
-            if (IsNullEmptyOrWhiteSpace(a)) throw new ArgumentException();
-            if (IsNullEmptyOrWhiteSpace(b)) throw new ArgumentException();
+            if (!IsNullEmptyOrWhiteSpace(a)) throw new ArgumentException();
+            if (!IsNullEmptyOrWhiteSpace(b)) throw new ArgumentException();
 
             string toReturn = "";
             bool inverseString = true;
