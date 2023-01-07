@@ -17,7 +17,26 @@ namespace TU_Challenge
 
         public static List<int> GenericSort(List<int> toSort, Func<int, int, int> isInOrder)
         {
-            throw new NotImplementedException();
+            List<int> list = toSort;
+            int InOrder = 0;
+            do
+            {
+                InOrder = 0;
+                for (int i = 0; i < list.Count - 1; i++)
+                {
+                    if (isInOrder(list[i], list[i + 1]) == -1)
+                    {
+                        int cash = list[i + 1];
+                        list[i + 1] = list[i];
+                        list[i] = cash;
+                    }
+                    else
+                    {
+                        InOrder++;
+                    }
+                }
+            } while (InOrder < list.Count - 1);
+            return list;
         }
 
         public static List<int> GetAllPrimary(int a)
@@ -67,7 +86,9 @@ namespace TU_Challenge
 
         public static int IsInOrderDesc(int arg1, int arg2)
         {
-            throw new NotImplementedException();
+            if (arg1 < arg2) return -1;
+            else if (arg1 > arg2) return 1;
+            else return 0;
         }
 
         public static bool IsListInOrder(List<int> list)
@@ -137,31 +158,20 @@ namespace TU_Challenge
 
         public static List<int> Sort(List<int> toSort)
         {
-            throw new NotImplementedException();
-            //toSort.RemoveAt
-            //toSort.Insert
-            /*
-            int TmpElement = toSort.ElementAt(0);
-            int iterator = 1;
-            bool isSort = false;
-            while (isSort == false)
+            List<int> list = toSort;
+            while(!IsListInOrder(list))
             {
-                int Elem = toSort.ElementAt(iterator);
-                if ((Elem == TmpElement) || (Elem > TmpElement))
+                for(int i = 0; i < list.Count -1 ; i++)
                 {
-                    Elem = TmpElement;
-                    iterator++;
+                    if (list[i] >= list[i + 1])
+                    {
+                        int Tmp = list[i];
+                        list[i] = list[i + 1];
+                        list[i + 1] = Tmp;
+                    }
                 }
-                else if (Elem < TmpElement)
-                {
-                    int ElemToAdd = Elem;
-                    toSort.RemoveAt(iterator);
-                    toSort.Insert((iterator - 1), ElemToAdd);
-                    iterator++;
-                }
-                isSort = IsListInOrder(toSort);
             }
-            return toSort;*/
+            return list;
         }
     }
 }

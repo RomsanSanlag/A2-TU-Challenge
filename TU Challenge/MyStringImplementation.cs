@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,21 @@ namespace TU_Challenge
     {
         public static string BazardString(string input)
         {
-            throw new NotImplementedException();
+            string debut = "";
+            string fin = "";
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    debut += input[i];
+                }
+                else
+                {
+                    fin += input[i];
+                }
+            }
+            string toReturn = debut += fin;
+            return toReturn;
         }
 
         public static bool IsNullEmptyOrWhiteSpace(string input)
@@ -33,52 +48,71 @@ namespace TU_Challenge
 
         public static string MixString(string a, string b)
         {
-            string stringToReturn = "";
-            int testLengthA = a.Length;
-            int testLengthB = b.Length;
-            int conditionFor = 0;
+            if (IsNullEmptyOrWhiteSpace(a)) throw new ArgumentException();
+            if (IsNullEmptyOrWhiteSpace(b)) throw new ArgumentException();
 
-            if ((testLengthA > testLengthB) || testLengthA == testLengthB)
+            string toReturn = "";
+            bool inverseString = true;
+            int iteratorA = 0;
+            int iteratorB = 0;
+
+            do
             {
-                conditionFor = testLengthA;
-            }
-            else conditionFor = testLengthB;
-            
-            for(int i = 0; i < conditionFor; i++)
-            {
-                if (i <= testLengthB)
+                if (iteratorA > a.Length - 1 && iteratorB > b.Length - 1) { return toReturn; }
+
+                if (iteratorA > a.Length - 1)
                 {
-                    char string1 = a[i];
-                    stringToReturn += string1;
-                    a.Remove(i);
+                    inverseString = false;
                 }
-                    
-                if (i <= testLengthB)
+                else if (iteratorB > b.Length - 1)
                 {
-                    char string2 = b[i];
-                    stringToReturn += string2;
-                    b.Remove(i);
+                    inverseString = true;
                 }
 
-                //tester les strings pour voir si elles sont vides avant de refaire un tour
-/*                if (IsNullEmptyOrWhiteSpace(a))
+                if (inverseString)
                 {
-                    stringToReturn += b;
-                    break;
+                    toReturn += a[iteratorA];
+                    iteratorA++;
                 }
-                else if (IsNullEmptyOrWhiteSpace(b))
+                else
                 {
-                    stringToReturn += a;
-                    break;
-                }*/
-                
+                    toReturn += b[iteratorB];
+                    iteratorB++;
+                }
+
+                inverseString = !inverseString;
+            } while (toReturn.Length <= a.Length + b.Length);
+
+            return toReturn;
+        }
+
+        public static string Reverse(string a)
+        {
+            string toReturn = "";
+            for (int i = a.Length - 1; i >= 0; i--)
+            {
+                toReturn += a[i];
             }
-            return stringToReturn;
+            return toReturn;
         }
 
         public static string ToCesarCode(string input, int offset)
         {
-            throw new NotImplementedException();
+            string toReturn = "";
+            foreach(char a in input)
+            {
+                if (a == ' ')
+                {
+                    toReturn += a;
+                }
+                else
+                {
+                    char c = char.IsUpper(a) ? 'A' : 'a';
+                    toReturn += (char)((((a + offset) - c) % 26) + c);
+                }
+                
+            }
+            return toReturn;
         }
 
         public static string ToLowerCase(string a)
@@ -100,25 +134,42 @@ namespace TU_Challenge
 
         public static string UnBazardString(string input)
         {
-            throw new NotImplementedException();
+            string a = "";
+            string b = "";
+            for (int i = 0; i < input.Length / 2; i++)
+            {
+                a += input[i];
+            }
+            for (int i = input.Length / 2; i < input.Length; i++)
+            {
+                b += input[i];
+            }
+            return MixString(a, b);
         }
 
         public static string Voyelles(string a)
         {
             string tmp = ToLowerCase(a);
-            string voyelles = "aeiou";
+            string voyelles = "aeiouy";
             string toReturn = "";
-            int lengthTmp = tmp.Length;
-            int lengthVoyelles = voyelles.Length;
-            for (int i = 0; i < lengthTmp; i++)
+            foreach(char c in tmp)
             {
-                char c = tmp[i];
-                for (int j = 0; i < lengthVoyelles; i++)
+                foreach(char c2 in voyelles)
                 {
-                    if (c == voyelles[j])
+                    if (c==c2)
                     {
-                        toReturn += c;
-                        break;
+                        bool isInString = false;
+                        foreach (char c3 in toReturn)
+                        {
+                            if (c3 == c)
+                            {
+                                isInString = true;
+                            }
+                        }
+                        if (!isInString)
+                        {
+                            toReturn += c;
+                        }
                     }
                 }
             }
